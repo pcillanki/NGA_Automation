@@ -7,6 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "wdio": "wdio run ./wdio.conf.js"
   },
+  "_moduleAliases": {
+    "@reporting": "./features/reporting"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -19,6 +22,7 @@
     "@wdio/spec-reporter": "^8.4.0"
   },
   "dependencies": {
-    "appium-xcuitest-driver": "^4.19.1"
+    "appium-xcuitest-driver": "^4.19.1",
+    "module-alias": "^2.2.2"
   }
 }
