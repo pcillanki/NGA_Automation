@@ -1,6 +1,6 @@
-
+require("module-alias/register");
 const wdio = require('webdriverio');
-//const reporting = require("@reporting");
+const reporting = require("./reporting.js");
 
 const opts = {
   path: '/wd/hub',
@@ -35,15 +35,15 @@ async function main () {
 
   let pINOnlyPolicy = await client.$("//android.widget.Button[@text='PIN only']");
 
-  let policyToSelect = 'Fallback';
+  let policyToSelect = 'pinonly';
   
   switch (policyToSelect.toLowerCase()){
 
     case 'fallback':
       console.log('****************Selecting "Fallback" Policy');
       await fallbackPolicy.waitForExist({timeout:2000});
-      //reporting().reportLog("Selecting Fallback policy");
-      //reporting().reportScreenshot(client);
+      //new reporting().reportLog("Selecting Fallback policy","",client);
+      //new reporting().reportScreenshot(client);
 
         await fallbackPolicy.click();
         
@@ -53,10 +53,10 @@ async function main () {
 
     case 'biometriconly':
       ('****************Selecting "Biometric Only" Policy');
-      await policy.waitForExist({timeout:2000});
+      await biometricOnlyPolicy.waitForExist({timeout:2000});
         reporting().reportLog("Selecting Biometric only policy");
         reporting().reportScreenshot(client);
-        await policy.click();
+        await biometricOnlyPolicy.click();
         
 
       //Click on 'Biometric only' button
@@ -64,10 +64,10 @@ async function main () {
 
     case 'pinonly':
       ('****************Selecting "PIN Only" Policy');
-      await policy.waitForExist({timeout:2000});
-        reporting().reportLog("Selecting PIN only policy");
-        reporting().reportScreenshot(client);
-        await policy.click();
+      await pINOnlyPolicy.waitForExist({timeout:2000});
+        //reporting().reportLog("Selecting PIN only policy");
+        //reporting().reportScreenshot(client);
+        await pINOnlyPolicy.click();
         
 
       //click on 'PIN only' button
@@ -86,25 +86,29 @@ async function main () {
   //   console.log(policyToSelect+' - Policy Selection FAILED');
   // }
   //-----------
-          // let settings = await client.$('//android.widget.TextView[@content-desc="Settings"]');
+           await client.pause(3000);
+           let settings = await client.$('//android.widget.TextView[@content-desc="Settings"]');
 
-          // console.log('Navigating to "Settings" screen');
+           console.log('Navigating to "Settings" screen');
           
-          // await settings.click();
+           await settings.click();
+           await client.pause(2000);
           
           // //navigateToSettings(client, settings);
-          // let appClientInfo = await client.$("//android.widget.TextView[@text='App and Client info']");
+           let appClientInfo = await client.$("//android.widget.TextView[@text='App and Client info']");
   // if (appClientInfo.waitForExist({timeout:2000})) {
   //   console.log('Navigation to "Settings" screen successful');
   // } else {
   //   console.log('Navigation to "Settings" screen FAILED');
   // }
-        // await appClientInfo.click(); 
+         await appClientInfo.click(); 
+         await client.pause(2000);
         // //navigateToAppClientInfo(client, appClientInfo);
 
-        // let oKDialog = await client.$("//android.widget.Button[@text='OK']");
-        // await oKDialog.click();
-        // console.log('Clicking on the OK button');
+         let oKDialog = await client.$("//android.widget.Button[@text='OK']");
+         await oKDialog.click();
+         console.log('Clicking on the OK button');
+         await client.pause(2000);
   //clickOnOK(client, oKDialog);
 
   //let appClientInfoLabel = await client.$('//android.widget.FrameLayout[@content-desc="App and Client Info"]');
@@ -113,8 +117,9 @@ async function main () {
   // } else {
   //   console.log('Alert window handling FAILED');
   // };
-        // await client.back();
-        // console.log('Navigating Back');
+         await client.back();
+         console.log('Navigating Back');
+         await client.pause(2000);
   // goBackToSettings(client);
   // let developerSettingsScreenLabel = await client.$('//android.widget.FrameLayout[@content-desc="Developer Settings"]');
   // if (developerSettingsScreenLabel.waitForExist({timeout:2000})) {
@@ -122,8 +127,9 @@ async function main () {
   // } else {
   //   console.log('Navigation to "Settings" screen FAILED');
   // };
-      // await client.back();
-      // console.log('Navigating Back');
+       await client.back();
+       console.log('Navigating Back');
+       await client.pause(2000);
   // goBackToSignIn(client);
   // let signInScreenLabel = await client.$('//android.widget.FrameLayout[@content-desc="Sign In"]');
   // if (signInScreenLabel.waitForExist({timeout:2000})) {
@@ -147,17 +153,79 @@ async function main () {
   let skipToMainContent = await client.$('//android.view.View[@content-desc="Skip to main content"]');
   await skipToMainContent.click();
 
-  await client.pause(20000);
+  await client.pause(30000);
   queryNGAAppStatus(client, nGAAppPackage);
 
   enrollButton = await client.$("//android.widget.Button[@text='Enroll']");
   await enrollButton.waitForDisplayed();
   await enrollButton.click(); 
   await client.pause(5000);
-  await client.fingerPrint(1);
-  await client.fingerPrint(2);
-  await client.fingerPrint(3);
-  await client.fingerPrint(4);
+
+  firstDigitPIN = await client.$("//android.widget.EditText[@text='Input First Pin']");
+  secondDigitPIN = await client.$("//android.widget.EditText[@text='Input Second Pin']");
+  thirdDigitPIN = await client.$("//android.widget.EditText[@text='Input Third Pin']");
+  fourthDigitPIN = await client.$("//android.widget.EditText[@text='Input Fourth Pin']");
+  fifthDigitPIN = await client.$("//android.widget.EditText[@text='Input Fifth Pin']");
+  sixthDigitPIN = await client.$("//android.widget.EditText[@text='Input Sixth Pin']");
+
+
+  await firstDigitPIN.setValue(1);
+  await secondDigitPIN.setValue(4);
+  await thirdDigitPIN.setValue(7);
+  await fourthDigitPIN.setValue(2);
+  await fifthDigitPIN.setValue(5);
+  await sixthDigitPIN.setValue(8);
+
+  let savePINButton = await client.$("//android.widget.Button[@text='Save']");
+  await savePINButton.waitForDisplayed();
+  await savePINButton.click(); 
+  await client.pause(5000);
+
+  await settings.click();
+  await client.pause(2000);
+
+  let logoutButton = await client.$("//android.widget.TextView[@text='Logout']");
+  await logoutButton.click();
+  await client.pause(2000);
+
+  let yesDialog = await client.$("//android.widget.Button[@text='YES']");
+  await yesDialog.click();
+  console.log('Clicking on the logout dialog button');
+  await client.pause(2000);
+
+  await client.pause(2000);
+  await signIn.click();
+  await client.pause(2000);
+
+  await firstDigitPIN.setValue(1);
+  await secondDigitPIN.setValue(4);
+  await thirdDigitPIN.setValue(7);
+  await fourthDigitPIN.setValue(2);
+  await fifthDigitPIN.setValue(5);
+  await sixthDigitPIN.setValue(8);
+
+  await client.pause(5000);
+
+  await settings.click();
+  await client.pause(2000);
+  
+  let fIDOAuthButton = await client.$("//android.widget.TextView[@text='FIDO Authentication']");
+  await fIDOAuthButton.click();
+  await client.pause(2000);
+
+  let fIDOAuthJwtTokenButton = await client.$("//android.widget.TextView[@text='HYPR JWT Token']");
+  await fIDOAuthJwtTokenButton.click();
+  await client.pause(5000);
+
+  await fIDOAuthJwtTokenButton.click();
+  await client.pause(3000);
+
+  await logoutButton.click();
+  await client.pause(2000);
+  // await client.fingerPrint(1);
+  // await client.fingerPrint(2);
+  // await client.fingerPrint(3);
+  // await client.fingerPrint(4);
   // contextNames = await client.getContexts();
   // await client.switchContext("WEBVIEW_com.cvshealth.ngasdk.sampleapp");
   // console.log('Context : ' +contextNames);
@@ -342,7 +410,6 @@ async function queryNGAAppStatus(driver, appPackage) {
     // await driver.back();
     // console.log('Navigating Back');
     // return;
-
   }
   //*************************************************************Click on 'Sign In' button
   async function signIn(driver, signInLink) {

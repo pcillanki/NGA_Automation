@@ -7,12 +7,12 @@ const pages = {
     login: LoginPage
 }
 
-Given(/^I am on the (\w+) page$/, async (page) => {
-    await pages[page].open()
+Given(/^User has launched the NGA sample application$/, async (login) => {
+    await pages[login].open()
 });
 
-When(/^I login with (\w+) and (.+)$/, async (username, password) => {
-    await LoginPage.login(username, password)
+When(/^I login with (\w+) and (.+)$/, async (login, username, password) => {
+    await pages[login].login(username, password)
 });
 
 Then(/^I should see a flash message saying (.*)$/, async (message) => {

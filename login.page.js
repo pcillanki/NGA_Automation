@@ -1,13 +1,11 @@
-
-
-const Page = require('./page');
+const NGAMobileApp = require('./NGAMobileApp');
 
 /**
- * sub page containing specific selectors and methods for a specific page
+ * Login page : containing specific selectors and methods for the Login page
  */
-class LoginPage extends Page {
+class LoginPage extends NGAMobileApp {
     /**
-     * define selectors using getter methods
+     * defining selectors using getter methods
      */
     get inputUsername () {
         return $('#username');
@@ -22,8 +20,8 @@ class LoginPage extends Page {
     }
 
     /**
-     * a method to encapsule automation code to interact with the page
-     * e.g. to login using username and password
+     * Login method to encapsule automation code to interact within the page
+     * Login using username and password
      */
     async login (username, password) {
         await this.inputUsername.setValue(username);
@@ -35,7 +33,7 @@ class LoginPage extends Page {
      * overwrite specific options to adapt it to page object
      */
     open () {
-        return super.open('login');
+        return super.launch();
     }
 }
 
