@@ -13,7 +13,8 @@ const opts = {
     appPackage: "com.cvshealth.ngasdk.sampleapp",
     appActivity: ".presentation.ui.activities.MainActivity",
     automationName: "UiAutomator2",
-    avd: "Pixel4"
+    avd: "Pixel4_Biometric",
+    newCommandTimeout: 1200
   }
 };
 
@@ -22,7 +23,8 @@ main().catch(console.log);
 async function main () {
 
   const client = await wdio.remote(opts);
-
+  await client.unlock();
+  
   let nGAAppPackage = "com.cvshealth.ngasdk.sampleapp";
   let username = "DMT-S-W263952560"
   let password = "Aetna2aetna"
@@ -35,7 +37,7 @@ async function main () {
 
   let pINOnlyPolicy = await client.$("//android.widget.Button[@text='PIN only']");
 
-  let policyToSelect = 'pinonly';
+  let policyToSelect = 'fallback';
   
   switch (policyToSelect.toLowerCase()){
 
@@ -44,8 +46,10 @@ async function main () {
       await fallbackPolicy.waitForExist({timeout:2000});
       //new reporting().reportLog("Selecting Fallback policy","",client);
       //new reporting().reportScreenshot(client);
-
-        await fallbackPolicy.click();
+      fallbackPolicyText = await fallbackPolicy.getText();
+      console.log(fallbackPolicyText);
+      
+      await fallbackPolicy.click();
         
 
        //Click on 'Fallback' policy button
@@ -54,8 +58,12 @@ async function main () {
     case 'biometriconly':
       ('****************Selecting "Biometric Only" Policy');
       await biometricOnlyPolicy.waitForExist({timeout:2000});
-        reporting().reportLog("Selecting Biometric only policy");
-        reporting().reportScreenshot(client);
+        //reporting().reportLog("Selecting Biometric only policy");
+        //reporting().reportScreenshot(client);
+
+        biometricOnlyPolicyText = await biometricOnlyPolicy.getText();
+        console.log(biometricOnlyPolicyText);
+
         await biometricOnlyPolicy.click();
         
 
@@ -65,8 +73,11 @@ async function main () {
     case 'pinonly':
       ('****************Selecting "PIN Only" Policy');
       await pINOnlyPolicy.waitForExist({timeout:2000});
-        //reporting().reportLog("Selecting PIN only policy");
-        //reporting().reportScreenshot(client);
+        await reporting().reportLog("Selecting PIN only policy");
+        await reporting().reportScreenshot(client);
+        pINOnlyPolicyText = await pINOnlyPolicy.getText();
+        console.log(pINOnlyPolicyText);
+
         await pINOnlyPolicy.click();
         
 
@@ -86,29 +97,34 @@ async function main () {
   //   console.log(policyToSelect+' - Policy Selection FAILED');
   // }
   //-----------
-           await client.pause(3000);
-           let settings = await client.$('//android.widget.TextView[@content-desc="Settings"]');
 
-           console.log('Navigating to "Settings" screen');
-          
-           await settings.click();
-           await client.pause(2000);
-          
-          // //navigateToSettings(client, settings);
-           let appClientInfo = await client.$("//android.widget.TextView[@text='App and Client info']");
+  await client.pause(3000);
+
+  let settings = await client.$('//android.widget.TextView[@content-desc="Settings"]');
+
+  console.log('Navigating to "Settings" screen');
+
+  await settings.click();
+  await client.pause(2000);
+  
+  // //navigateToSettings(client, settings);
+  let appClientInfo = await client.$("//android.widget.TextView[@text='App and Client info']");
   // if (appClientInfo.waitForExist({timeout:2000})) {
   //   console.log('Navigation to "Settings" screen successful');
   // } else {
   //   console.log('Navigation to "Settings" screen FAILED');
   // }
-         await appClientInfo.click(); 
-         await client.pause(2000);
-        // //navigateToAppClientInfo(client, appClientInfo);
+  appClientInfoText = await appClientInfo.getText();
+  console.log(appClientInfoText);
 
-         let oKDialog = await client.$("//android.widget.Button[@text='OK']");
-         await oKDialog.click();
-         console.log('Clicking on the OK button');
-         await client.pause(2000);
+  await appClientInfo.click(); 
+  await client.pause(2000);
+  // //navigateToAppClientInfo(client, appClientInfo);
+
+  let oKDialog = await client.$("//android.widget.Button[@text='OK']");
+  await oKDialog.click();
+  console.log('Clicking on the OK button');
+  await client.pause(2000);
   //clickOnOK(client, oKDialog);
 
   //let appClientInfoLabel = await client.$('//android.widget.FrameLayout[@content-desc="App and Client Info"]');
@@ -117,9 +133,9 @@ async function main () {
   // } else {
   //   console.log('Alert window handling FAILED');
   // };
-         await client.back();
-         console.log('Navigating Back');
-         await client.pause(2000);
+  await client.back();
+  console.log('Navigating Back');
+  await client.pause(2000);
   // goBackToSettings(client);
   // let developerSettingsScreenLabel = await client.$('//android.widget.FrameLayout[@content-desc="Developer Settings"]');
   // if (developerSettingsScreenLabel.waitForExist({timeout:2000})) {
@@ -127,9 +143,9 @@ async function main () {
   // } else {
   //   console.log('Navigation to "Settings" screen FAILED');
   // };
-       await client.back();
-       console.log('Navigating Back');
-       await client.pause(2000);
+  await client.back();
+  console.log('Navigating Back');
+  await client.pause(2000);
   // goBackToSignIn(client);
   // let signInScreenLabel = await client.$('//android.widget.FrameLayout[@content-desc="Sign In"]');
   // if (signInScreenLabel.waitForExist({timeout:2000})) {
@@ -140,92 +156,337 @@ async function main () {
   //-----------
   await client.pause(2000);
   let signIn = client.$('//android.widget.Button[@content-desc="Sign In"]');
+
+  signInText = await signIn.getText();
+  console.log(signInText);
+
   await signIn.click();
 
   //signIn(client, signInLink);
   console.log('Clicking on Sign In successful');
-  await client.pause(35000);
+  await client.pause(45000);
   // let elem = await client.$("//android.widget.Button[@id='loginButton']");
   // await elem.waitUntil(async function () {
   //   return (await this.getText()) === 'Secure Log In'
   // });
-  queryNGAAppStatus(client, nGAAppPackage);
+  //queryNGAAppStatus(client, nGAAppPackage);
+
   let skipToMainContent = await client.$('//android.view.View[@content-desc="Skip to main content"]');
   await skipToMainContent.click();
+  console.log('Click on Skip To Main Content successful');
 
-  await client.pause(30000);
-  queryNGAAppStatus(client, nGAAppPackage);
+  let usernameInput = await client.$("//android.widget.EditText[@resource-id='username']");
+  await usernameInput.setValue('DMT-S-W263952560');
+  await client.pause(2000);
+
+  let passwordInput = await client.$("//android.widget.EditText[@resource-id='password']");
+  await passwordInput.setValue('Aetna2aetna');
+  await client.pause(2000);
+
+  let loginButton = await client.$("//android.widget.Button[@text='Secure Log In']");
+  await loginButton.click();
+  await client.pause(10000);
+
+  //queryNGAAppStatus(client, nGAAppPackage);
+
+  await settings.click();
+  await client.pause(2000);
+  console.log('Click on Settings Icon successful');
+
+  let primaryAuthenticationTokens = await client.$("//android.widget.TextView[@text='Primary Authentication']");
+  await primaryAuthenticationTokens.click();
+  await client.pause(2000);
+  console.log('Click on Primary Authentication label successful');
+
+  let primaryAuthenticationAccessToken = await client.$("//android.widget.TextView[@text='Access Token']");
+  await primaryAuthenticationAccessToken.click();
+  await client.pause(3000);
+  console.log('Click on Access Token label successful');
+
+  await primaryAuthenticationAccessToken.click();
+  await client.pause(2000);
+
+  let primaryAuthenticationIDToken = await client.$("//android.widget.TextView[@text='ID Token']");
+  await primaryAuthenticationIDToken.click();
+  await client.pause(3000);
+  console.log('Click on ID Token label successful');
+
+  await primaryAuthenticationIDToken.click();
+  await client.pause(2000);
+
+  // let changeEnvironment = await client.$("//android.widget.TextView[@id='com.cvshealth.ngasdk.sampleapp:id/tvEnvValue']");
+  // await changeEnvironment.click();
+  // await client.pause(2000);
+  // console.log('Click on Change Environment successful');
+
+  await client.back();
+  console.log('Navigating Back');
+  await client.pause(2000);
 
   enrollButton = await client.$("//android.widget.Button[@text='Enroll']");
   await enrollButton.waitForDisplayed();
-  await enrollButton.click(); 
+  await enrollButton.click();
+
   await client.pause(5000);
 
-  firstDigitPIN = await client.$("//android.widget.EditText[@text='Input First Pin']");
-  secondDigitPIN = await client.$("//android.widget.EditText[@text='Input Second Pin']");
-  thirdDigitPIN = await client.$("//android.widget.EditText[@text='Input Third Pin']");
-  fourthDigitPIN = await client.$("//android.widget.EditText[@text='Input Fourth Pin']");
-  fifthDigitPIN = await client.$("//android.widget.EditText[@text='Input Fifth Pin']");
-  sixthDigitPIN = await client.$("//android.widget.EditText[@text='Input Sixth Pin']");
+  if (policyToSelect == 'pinonly') {
 
+    firstDigitPIN = await client.$("//android.widget.EditText[@text='Input First Pin']");
+    secondDigitPIN = await client.$("//android.widget.EditText[@text='Input Second Pin']");
+    thirdDigitPIN = await client.$("//android.widget.EditText[@text='Input Third Pin']");
+    fourthDigitPIN = await client.$("//android.widget.EditText[@text='Input Fourth Pin']");
+    fifthDigitPIN = await client.$("//android.widget.EditText[@text='Input Fifth Pin']");
+    sixthDigitPIN = await client.$("//android.widget.EditText[@text='Input Sixth Pin']");
 
-  await firstDigitPIN.setValue(1);
-  await secondDigitPIN.setValue(4);
-  await thirdDigitPIN.setValue(7);
-  await fourthDigitPIN.setValue(2);
-  await fifthDigitPIN.setValue(5);
-  await sixthDigitPIN.setValue(8);
+    await firstDigitPIN.setValue(1);
+    await secondDigitPIN.setValue(4);
+    await thirdDigitPIN.setValue(7);
+    await fourthDigitPIN.setValue(2);
+    await fifthDigitPIN.setValue(5);
+    await sixthDigitPIN.setValue(8);
 
-  let savePINButton = await client.$("//android.widget.Button[@text='Save']");
-  await savePINButton.waitForDisplayed();
-  await savePINButton.click(); 
-  await client.pause(5000);
+    let savePINButton = await client.$("//android.widget.Button[@text='Save']");
+    await savePINButton.waitForDisplayed();
+    await savePINButton.click(); 
+    await client.pause(5000);
 
-  await settings.click();
+    await settings.click();
+    await client.pause(2000);
+
+    let logoutButton = await client.$("//android.widget.TextView[@text='Logout']");
+    await logoutButton.click();
+    await client.pause(2000);
+
+    let yesDialog = await client.$("//android.widget.Button[@text='YES']");
+    await yesDialog.click();
+    console.log('Clicking on the logout dialog button');
+    await client.pause(2000);
+
+    await client.pause(2000);
+    await signIn.click();
+    await client.pause(2000);
+
+    await firstDigitPIN.setValue(1);
+    await secondDigitPIN.setValue(4);
+    await thirdDigitPIN.setValue(7);
+    await fourthDigitPIN.setValue(2);
+    await fifthDigitPIN.setValue(5);
+    await sixthDigitPIN.setValue(8);
+
+    await client.pause(5000);
+
+    await settings.click();
+    await client.pause(2000);
+    
+    let fIDOAuthButton = await client.$("//android.widget.TextView[@text='FIDO Authentication']");
+    await fIDOAuthButton.click();
+    await client.pause(2000);
+
+    let fIDOAuthJwtTokenButton = await client.$("//android.widget.TextView[@text='HYPR JWT Token']");
+    await fIDOAuthJwtTokenButton.click();
+    await client.pause(5000);
+
+    await fIDOAuthJwtTokenButton.click();
+    await client.pause(3000);
+
+    await logoutButton.click();
+    console.log('Clicking on the Logout button successful');
+    await client.pause(2000);
+
+    await yesDialog.click();
+    console.log('Clicking on the Yes dialog button');
+    await client.pause(2000);
+
+  } else if (policyToSelect == 'biometriconly') {
+
+    await client.pause(8000);
+    //await client.fingerPrint(1);
+    //await client.execute("adb -e emulator-5554 finger touch 1");
+    //await client.execute("adb shell getprop ro.bootimage.build.fingerprint");
+
+    await client.fingerPrint(1);
+    await client.pause(1000);
+    await client.fingerPrint(1);
+    await client.pause(1000);
+    await client.fingerPrint(1);
+    await client.pause(2000);
+    console.log('Providing biometric successful');
+
+    await settings.click();
+    await client.pause(2000);
+
+    let logoutButton = await client.$("//android.widget.TextView[@text='Logout']");
+    await logoutButton.click();
+    console.log('Clicking on the Logout button successful');
+    await client.pause(2000);
+
+    let yesDialog = await client.$("//android.widget.Button[@text='YES']");
+    await yesDialog.click();
+    console.log('Clicking on the Yes dialog button');
+    await client.pause(6000);
+
+    await client.pause(2000);
+    await signIn.click();
+    await client.pause(6000);
+
+    await client.fingerPrint(1);
+    await client.pause(3000);
+
+    await client.fingerPrint(1);
+    await client.pause(6000);
+
+    await settings.click();
+    await client.pause(2000);
+    
+    let fIDOAuthButton = await client.$("//android.widget.TextView[@text='FIDO Authentication']");
+    await fIDOAuthButton.click();
+    await client.pause(2000);
+
+    let fIDOAuthJwtTokenButton = await client.$("//android.widget.TextView[@text='HYPR JWT Token']");
+    await fIDOAuthJwtTokenButton.click();
+    await client.pause(5000);
+
+    await fIDOAuthJwtTokenButton.click();
+    await client.pause(3000);
+
+    await logoutButton.click();
+    console.log('Clicking on the Logout button successful');
+    await client.pause(2000);
+
+    await yesDialog.click();
+    console.log('Clicking on the Yes dialog button');
+    await client.pause(6000);
+
+  } else {
+    
+    await client.pause(8000);
+    //await client.fingerPrint(1);
+    //await client.execute("adb -e emulator-5554 finger touch 1");
+    //await client.execute("adb shell getprop ro.bootimage.build.fingerprint");
+
+    await client.fingerPrint(1);
+    await client.pause(1000);
+    await client.fingerPrint(1);
+    await client.pause(1000);
+    await client.fingerPrint(1);
+
+    await client.pause(4000);
+    console.log('Providing biometric successful');
+
+    firstDigitPIN = await client.$("//android.widget.EditText[@text='Input First Pin']");
+    secondDigitPIN = await client.$("//android.widget.EditText[@text='Input Second Pin']");
+    thirdDigitPIN = await client.$("//android.widget.EditText[@text='Input Third Pin']");
+    fourthDigitPIN = await client.$("//android.widget.EditText[@text='Input Fourth Pin']");
+    fifthDigitPIN = await client.$("//android.widget.EditText[@text='Input Fifth Pin']");
+    sixthDigitPIN = await client.$("//android.widget.EditText[@text='Input Sixth Pin']");
+
+    await firstDigitPIN.setValue(1);
+    await secondDigitPIN.setValue(4);
+    await thirdDigitPIN.setValue(7);
+    await fourthDigitPIN.setValue(2);
+    await fifthDigitPIN.setValue(5);
+    await sixthDigitPIN.setValue(8);
+
+    let savePINButton = await client.$("//android.widget.Button[@text='Save']");
+    await savePINButton.waitForDisplayed();
+    await savePINButton.click(); 
+    await client.pause(5000);
+
+    await settings.click();
+    await client.pause(2000);
+
+    let logoutButton = await client.$("//android.widget.TextView[@text='Logout']");
+    await logoutButton.click();
+    await client.pause(2000);
+
+    let yesDialog = await client.$("//android.widget.Button[@text='YES']");
+    await yesDialog.click();
+    console.log('Clicking on the logout dialog button');
+    await client.pause(2000);
+
+    await client.pause(2000);
+    await signIn.click();
+    await client.pause(10000);
+
+    /*await firstDigitPIN.setValue(1);
+    await secondDigitPIN.setValue(4);
+    await thirdDigitPIN.setValue(7);
+    await fourthDigitPIN.setValue(2);
+    await fifthDigitPIN.setValue(5);
+    await sixthDigitPIN.setValue(8);*/
+
+    await client.fingerPrint(1);
+    await client.pause(1000);
+    await client.fingerPrint(1);
+    await client.pause(1000);
+    await client.fingerPrint(1);
+    await client.pause(2000);
+    console.log('Providing biometric successful');
+
+    await client.pause(5000);
+
+    await settings.click();
+    await client.pause(2000);
+    
+    let fIDOAuthButton = await client.$("//android.widget.TextView[@text='FIDO Authentication']");
+    await fIDOAuthButton.click();
+    await client.pause(2000);
+
+    let fIDOAuthJwtTokenButton = await client.$("//android.widget.TextView[@text='HYPR JWT Token']");
+    await fIDOAuthJwtTokenButton.click();
+    await client.pause(5000);
+
+    await fIDOAuthJwtTokenButton.click();
+    await client.pause(3000);
+
+    await logoutButton.click();
+    console.log('Clicking on the Logout button successful');
+    await client.pause(2000);
+
+    await yesDialog.click();
+    console.log('Clicking on the Yes dialog button');
+    await client.pause(2000);
+
+    await settings.click();
+    await client.pause(2000);
+
+    await logoutButton.click();
+    console.log('Clicking on the Logout button successful');
+    await client.pause(2000);
+
+    await yesDialog.click();
+    console.log('Clicking on the Yes dialog button');
+    await client.pause(2000);
+
+    await client.pause(2000);
+    await signIn.click();
+    await client.pause(2000);
+
+    await client.fingerPrint(1);
+    await client.pause(3000);
+
+  }
+  
+  //Unenroll
+  unenrollButton = await client.$("//android.widget.Button[@text='Unenroll']");
+  await unenrollButton.click();
+  console.log('Clicking on the Unenroll button successful');
   await client.pause(2000);
 
-  let logoutButton = await client.$("//android.widget.TextView[@text='Logout']");
-  await logoutButton.click();
-  await client.pause(2000);
-
-  let yesDialog = await client.$("//android.widget.Button[@text='YES']");
   await yesDialog.click();
-  console.log('Clicking on the logout dialog button');
+  console.log('Clicking on the Yes dialog button');
   await client.pause(2000);
 
-  await client.pause(2000);
-  await signIn.click();
-  await client.pause(2000);
-
-  await firstDigitPIN.setValue(1);
-  await secondDigitPIN.setValue(4);
-  await thirdDigitPIN.setValue(7);
-  await fourthDigitPIN.setValue(2);
-  await fifthDigitPIN.setValue(5);
-  await sixthDigitPIN.setValue(8);
-
-  await client.pause(5000);
-
-  await settings.click();
+  //Reset
+  resetButton = await client.$("//android.widget.Button[@text='Reset App']");
+  await resetButton.click();
+  console.log('Clicking on the Reset App button successful');
   await client.pause(2000);
   
-  let fIDOAuthButton = await client.$("//android.widget.TextView[@text='FIDO Authentication']");
-  await fIDOAuthButton.click();
+  await yesDialog.click();
+  console.log('Clicking on the Yes dialog button');
   await client.pause(2000);
 
-  let fIDOAuthJwtTokenButton = await client.$("//android.widget.TextView[@text='HYPR JWT Token']");
-  await fIDOAuthJwtTokenButton.click();
-  await client.pause(5000);
-
-  await fIDOAuthJwtTokenButton.click();
-  await client.pause(3000);
-
-  await logoutButton.click();
-  await client.pause(2000);
-  // await client.fingerPrint(1);
-  // await client.fingerPrint(2);
-  // await client.fingerPrint(3);
-  // await client.fingerPrint(4);
   // contextNames = await client.getContexts();
   // await client.switchContext("WEBVIEW_com.cvshealth.ngasdk.sampleapp");
   // console.log('Context : ' +contextNames);
