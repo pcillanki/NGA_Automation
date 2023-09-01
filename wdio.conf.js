@@ -1,3 +1,5 @@
+const cucumber = require("./cucumber");
+
 exports.config = {
     //
     // ====================
@@ -24,7 +26,7 @@ exports.config = {
     // will be called from there.
     //
     specs: [
-        './features/**/*.feature'
+        './features/*.feature'
     ],
     // Patterns to exclude.
     exclude: [
@@ -46,7 +48,7 @@ exports.config = {
     // and 30 processes will get spawned. The property handles how many capabilities
     // from the same test should run tests.
     //
-    maxInstances: 10,
+    maxInstances: 1,
     //
     // If you have trouble getting all important capabilities together, check out the
     // Sauce Labs platform configurator - a great tool to configure your capabilities:
@@ -57,10 +59,20 @@ exports.config = {
         // maxInstances can get overwritten per capability. So if you have an in-house Selenium
         // grid with only 5 firefox instances available you can make sure that not more than
         // 5 instances get started at a time.
-        maxInstances: 5,
+        //maxInstances: 5,
         //
-        browserName: 'chrome',
-        acceptInsecureCerts: true
+        //browserName: 'chrome',
+        //acceptInsecureCerts: true
+        "path": "/wd/hub",
+        'appium:platformName': "Android",
+        'appium:platformVersion': "13",
+        'appium:deviceName': "Android Emulator",
+        'appium:app': "/Users/c1315249/Downloads/NGA_AndroidBuilds/sampleapp-debug.21.apk",
+        'appium:appPackage': "com.cvshealth.ngasdk.sampleapp",
+        'appium:appActivity': ".presentation.ui.activities.MainActivity",
+        'appium:automationName': "UiAutomator2",
+        'appium:avd': "Pixel4_Biometric",
+        'appium:newCommandTimeout': 9000
         // If outputDir is provided WebdriverIO can capture driver session logs
         // it is possible to configure which logTypes to include/exclude.
         // excludeDriverLogs: ['*'], // pass '*' to exclude all driver session logs
@@ -97,7 +109,7 @@ exports.config = {
     // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
     // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
     // gets prepended directly.
-    baseUrl: 'http://0.0.0.0',
+    baseUrl: 'http://127.0.0.1',
     //
     // Default timeout for all waitFor* commands.
     waitforTimeout: 10000,
@@ -113,7 +125,7 @@ exports.config = {
     // Services take over a specific job you don't want to take care of. They enhance
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
-    services: ['selenium-standalone','appium'],
+    services: ['appium'],
     
     // Framework you want to run your specs with.
     // The following are supported: Mocha, Jasmine, and Cucumber
@@ -135,15 +147,17 @@ exports.config = {
     // Test reporter for stdout.
     // The only one supported by default is 'dot'
     // see also: https://webdriver.io/docs/dot-reporter
-    reporters: ['spec'],
+    reporters: ['cucumber-js'],
 
-
-    //
     // If you are using Cucumber you need to specify the location of your step definitions.
     cucumberOpts: {
         // <string[]> (file/dir) require files before executing features
-        require: ['./features/step-definitions/steps.js'],
+        require: ['./steps.js'],
         // <boolean> show full backtrace for errors
+        plugin: ["pretty", "html:reports/cucumber-report.html"],
+        
+        publishQuiet: true,
+
         backtrace: false,
         // <string[]> ("extension:module") require files with the given EXTENSION after requiring MODULE (repeatable)
         requireModule: [],
@@ -158,7 +172,8 @@ exports.config = {
         // <boolean> fail if there are any undefined or pending steps
         strict: false,
         // <string> (expression) only execute the features or scenarios with tags matching the expression
-        tagExpression: '',
+        //tagExpression: '@Test',
+        tagExpression: '@E2E_PrimaryAuth_Enroll_Logout_SignIn_Authenticate_Unenroll_Reset',
         // <number> timeout for step definitions
         timeout: 60000,
         // <boolean> Enable this config to treat undefined definitions as warnings.
@@ -178,8 +193,8 @@ exports.config = {
      * @param {Object} config wdio configuration object
      * @param {Array.<Object>} capabilities list of capabilities details
      */
-    // onPrepare: function (config, capabilities) {
-    // },
+    //onPrepare: function (config, capabilities) {
+    //},
     /**
      * Gets executed before a worker process is spawned and can be used to initialise specific service
      * for that worker as well as modify runtime environments in an async fashion.

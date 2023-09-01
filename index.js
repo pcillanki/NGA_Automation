@@ -1,6 +1,4 @@
-require("module-alias/register");
 const wdio = require('webdriverio');
-const reporting = require("./reporting.js");
 
 const opts = {
   path: '/wd/hub',
@@ -14,7 +12,7 @@ const opts = {
     appActivity: ".presentation.ui.activities.MainActivity",
     automationName: "UiAutomator2",
     avd: "Pixel4_Biometric",
-    newCommandTimeout: 1200
+    newCommandTimeout: 60000
   }
 };
 
@@ -586,22 +584,27 @@ async function queryNGAAppStatus(driver, appPackage) {
   switch (state){
     case 0:
       console.log('NGA Sample App is NOT INSTALLED');
+      return 0;
       break;
 
     case 1:
       console.log('NGA Sample App is NOT RUNNING');
+      return 1;
       break;
       
     case 2:
       console.log('NGA Sample App is running in the BACKGROUND/SUSPENDED');
+      return 2;
       break;
 
     case 3:
       console.log('NGA Sample App is running in the BACKGROUND');
+      return 3;
       break;
 
     case 4:
       console.log('NGA Sample App is running in the FOREGROUND');
+      return 4;
       break;
 
     default:
