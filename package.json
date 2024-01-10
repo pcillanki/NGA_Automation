@@ -4,21 +4,20 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "nga": "./node_modules/.bin/wdio run ./wdio.conf.js",
-    "cucumber": "cucumber-js"
+    "report": "node index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-  },
-  "dependencies": {
-    "@wdio/appium-service": "^8.6.1",
-    "@wdio/cli": "^8.6.1",
-    "@wdio/local-runner": "^8.6.1",
-    "@wdio/selenium-standalone-service": "^8.6.1",
-    "@wdio/spec-reporter": "^8.4.0",
-    "@wdio/cucumber-framework": "^8.15.10"
+    "@wdio/appium-service": "^8.16.6",
+    "@wdio/cli": "^8.16.6",
+    "@wdio/cucumber-framework": "^8.16.6",
+    "@wdio/local-runner": "^8.16.6",
+    "@wdio/spec-reporter": "^8.16.3",
+    "cucumber-html-reporter": "^7.1.1",
+    "fs-extra": "^11.1.1",
+    "wdio-cucumberjs-json-reporter":"^5.1.7"
   }
 }

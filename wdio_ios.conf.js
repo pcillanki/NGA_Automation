@@ -27,7 +27,7 @@ exports.config = {
     // will be called from there.
     //
     specs: [
-        './features/androidRegression.feature'
+        './features/*.feature'
     ],
     // Patterns to exclude.
     exclude: [
@@ -65,14 +65,12 @@ exports.config = {
         //browserName: 'chrome',
         //acceptInsecureCerts: true
         "path": "/wd/hub",
-        'appium:platformName': "Android",
-        'appium:platformVersion': "13",
-        'appium:deviceName': "Android Emulator",
-        'appium:app': "/Users/c1315249/Downloads/NGA_AndroidBuilds/sampleapp-debug.23.apk",
-        'appium:appPackage': "com.cvshealth.ngasdk.sampleapp",
-        'appium:appActivity': ".presentation.ui.activities.MainActivity",
-        'appium:automationName': "UiAutomator2",
-        'appium:avd': "Pixel4",
+        'appium:platformName': "iOS",
+        'appium:platformVersion': "16.1",
+        'appium:deviceName': "iPhone Simulator",
+        'appium:app': "/Users/c1315249/Downloads/NGA Sample App 20.app",
+        'appium:appPackage': "com.cvs.NGASampleApp",
+        'appium:automationName': "XCUITest",
         'appium:newCommandTimeout': 60000
         // If outputDir is provided WebdriverIO can capture driver session logs
         // it is possible to configure which logTypes to include/exclude.
@@ -165,7 +163,7 @@ exports.config = {
     // If you are using Cucumber you need to specify the location of your step definitions.
     cucumberOpts: {
         // <string[]> (file/dir) require files before executing features
-        require: ['./steps.js','.steps/settings.js','.steps/authenticate.js','.steps/changePolicy.js','.steps/enroll.js','.steps/logout.js','.steps/primaryAuthentication.js','.steps/reset.js','.steps/selectPolicy.js','.steps/unenroll.js'],
+        require: ['./steps.js'],
         // <boolean> show full backtrace for errors
         plugin: ["pretty", "html:reports/cucumber-report.html"],
         
@@ -186,7 +184,7 @@ exports.config = {
         strict: false,
         // <string> (expression) only execute the features or scenarios with tags matching the expression
         //tagExpression: '@Test',
-        tagExpression: '@PrimaryAuth',
+        tagExpression: '@Negative_BlankPIN_InvalidPIN',
         // <number> timeout for step definitions
         timeout: 60000,
         // <boolean> Enable this config to treat undefined definitions as warnings.
