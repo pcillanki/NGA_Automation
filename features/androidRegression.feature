@@ -409,7 +409,7 @@ Feature: NGA Android Sample App
     When the user clicks on Enroll
     When the user enters a blank PIN
     When the user validates the blank PIN error message
-    When the user enters a invalid PINs
+    When the user enters invalid PINs
     When the user validates the invalid PIN error messages
     When the user cancels enrollment
     When the user clicks on Enroll

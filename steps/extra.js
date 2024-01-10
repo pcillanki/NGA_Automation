@@ -23,12 +23,6 @@ Given('the user launches the NGA sample application', async function() {
     //resource-id - com.cvshealth.ngasdk.sampleapp:id/imgInfo
     //accessibility id - Info
 
-    const cancelEnrollButton = await driver.$("//android.widget.Button[@content-desc='Cancel Enrollment']");
-    //id - com.cvshealth.ngasdk.sampleapp:id/btnCancel
-    //resource-id - com.cvshealth.ngasdk.sampleapp:id/btnCancel
-    //accessibility id - Cancel Enrollment
-    //text - Cancel Enrollment
-
     const infoMessage = await driver.$("//android.widget.TextView[@resource-id='android:id/message']");
     //text - Your PIN cannot contain: 3 or more sequential numbers (1234…) A repeating pattern (4545…)
     //id - android:id/message
@@ -89,40 +83,11 @@ Given('the user launches the NGA sample application', async function() {
     //class - android.widget.TextView
     //resource-id - com.cvshealth.ngasdk.sampleapp:id/tvEnvValue
 
-
-
-    const idTokenValue = await driver.$("//android.widget.TextView[@resource-id='com.cvshealth.ngasdk.sampleapp:id/tvIdTokenValue']");
-    //id - com.cvshealth.ngasdk.sampleapp:id/tvIdTokenValue
-    //class - android.widget.TextView
-    //resource-id - com.cvshealth.ngasdk.sampleapp:id/tvIdTokenValue
-
-    const accessTokenValue = await driver.$("//android.widget.TextView[@resource-id='com.cvshealth.ngasdk.sampleapp:id/tvAccessTokenValue']");
-    //id - com.cvshealth.ngasdk.sampleapp:id/tvAccessTokenValue
-    //class - android.widget.TextView
-    //resource-id - com.cvshealth.ngasdk.sampleapp:id/tvAccessTokenValue
-
     const enrollFailedMessage = await driver.$("//android.widget.TextView[@resource-id='android:id/message']");
     //id - android:id/message
     //class - android.widget.TextView
     //text - Enroll failed
     //resource-id - android:id/message
-
-    const fidoAuthenticationToken = await driver.$("//android.widget.TextView[@resource-id='com.cvshealth.ngasdk.sampleapp:id/tvFidoAuthentication']");
-    //id - com.cvshealth.ngasdk.sampleapp:id/tvFidoAuthentication
-    //class - android.widget.TextView
-    //text - FIDO Authentication
-    //resource-id - com.cvshealth.ngasdk.sampleapp:id/tvFidoAuthentication
-
-    const jwtToken = await driver.$("//android.widget.TextView[@resource-id='com.cvshealth.ngasdk.sampleapp:id/tvTitleJwtToken']");
-    //id - com.cvshealth.ngasdk.sampleapp:id/tvTitleJwtToken
-    //class - android.widget.TextView
-    //text - HYPR JWT Token
-    //resource-id - com.cvshealth.ngasdk.sampleapp:id/tvTitleJwtToken
-
-    const jwtTokenValue = await driver.$("//android.widget.TextView[@resource-id='com.cvshealth.ngasdk.sampleapp:id/tvJwtTokenValue']");
-    //id - com.cvshealth.ngasdk.sampleapp:id/tvJwtTokenValue
-    //class - android.widget.TextView
-    //resource-id - com.cvshealth.ngasdk.sampleapp:id/tvJwtTokenValue
 
 });
 

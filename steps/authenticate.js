@@ -256,6 +256,66 @@ When(/^the user authenticates (.+)$/, async function(policy){
 });
 
 When(/^the user cancels authentication with (.+)$/, async function(policy){
+    try {
+
+        const signIn = driver.$('//android.widget.Button[@content-desc="Sign In"]');
+        
+        if (policy.toLowerCase() == 'pinonly') {
+
+            await signIn.click();
+
+            await driver.pause(2000);
+
+            await driver.back();
+            console.log('Navigating Back');
+            await driver.pause(2000);
+
+            const oKDialog = await driver.$("//android.widget.Button[@text='OK']");
+            //resource-id/id - android:id/button1
+            await oKDialog.click();
+            console.log('Clicking on the OK button');
+            await driver.pause(2000);
+
+        } else if (policy.toLowerCase() == 'biometriconly') {
+
+            await signIn.click();
+
+            await driver.pause(6000);
+
+            await driver.back();
+            console.log('Navigating Back');
+            await driver.pause(2000);
+
+            const oKDialog = await driver.$("//android.widget.Button[@text='OK']");
+            //resource-id/id - android:id/button1
+            await oKDialog.click();
+            console.log('Clicking on the OK button');
+            await driver.pause(2000);
+
+        } else {
+
+            await signIn.click();
+            await driver.pause(6000);
+
+            await driver.back();
+            console.log('Navigating Back');
+
+            await driver.pause(2000);
+
+            const oKDialog = await driver.$("//android.widget.Button[@text='OK']");
+            //resource-id/id - android:id/button1
+            await oKDialog.click();
+            console.log('Clicking on the OK button');
+            await driver.pause(2000);
+
+        }
+
+    } catch (err) {
+    
+        await driver.closeApp();
+        await driver.removeApp('com.cvshealth.ngasdk.sampleapp');
+        throw new Error("Error while navigating to Settings screen\n" + err);
+    }
 });
 
 When(/^the user authenticates with incorrect PIN$/, async function(){
