@@ -3,7 +3,7 @@ const { Given, When, Then, setDefaultTimeout } = require('@wdio/cucumber-framewo
 
 setDefaultTimeout(750 * 1000);
 
-Given('the user launches the NGA sample application', async function() {
+Given('the user launches the NGA sample application extra', async function() {
 
     console.log("*****the user launches the NGA sample application");
     this.log("NGA Android Sample Application launched");
@@ -91,7 +91,7 @@ Given('the user launches the NGA sample application', async function() {
 
 });
 
-When('the user enters a valid PIN', async function() {
+When('the user enters a valid PIN extra', async function() {
 
     console.log("*****the user enters a valid PIN");
     this.log("NGA Android Sample Application launched");
@@ -102,7 +102,7 @@ When('the user enters a valid PIN', async function() {
 
 });
 
-When('the user validates the blank PIN error message', async function() {
+When('the user validates the blank PIN error message extra', async function() {
 
     console.log("*****the user validates the blank PIN error message");
     this.log("NGA Android Sample Application launched");
@@ -113,7 +113,7 @@ When('the user validates the blank PIN error message', async function() {
 
 });
 
-When('the user validates the invalid PIN error messages', async function() {
+When('the user validates the invalid PIN error messages extra', async function() {
 
     console.log("*****the user validates the invalid PIN error messages");
     this.log("NGA Android Sample Application launched");
@@ -124,7 +124,7 @@ When('the user validates the invalid PIN error messages', async function() {
 
 });
 
-When('the user cancels PIN enrollment', async function() {
+When('the user cancels PIN enrollment extra', async function() {
 
     console.log("*****the user cancels PIN enrollment");
     this.log("NGA Android Sample Application launched");
@@ -135,7 +135,7 @@ When('the user cancels PIN enrollment', async function() {
 
 });
 
-When('the user validates the incorrect PIN error message', async function() {
+When('the user validates the incorrect PIN error message extra', async function() {
 
     console.log("*****the user validates the incorrect PIN error message");
     this.log("NGA Android Sample Application launched");
@@ -146,7 +146,7 @@ When('the user validates the incorrect PIN error message', async function() {
 
 });
 
-When('the user enters incorrect PIN', async function() {
+When('the user enters incorrect PIN extra', async function() {
 
     console.log("the user enters incorrect PIN");
     this.log("NGA Android Sample Application launched");
@@ -157,9 +157,7 @@ When('the user enters incorrect PIN', async function() {
 
 });
 
-
-
-When('the user changes the Airplane Mode toggle', async function() {
+When('the user changes the Airplane Mode toggle extra', async function() {
 
     try {
         
@@ -177,6 +175,7 @@ When('the user changes the Airplane Mode toggle', async function() {
         
     }
 });
+
 
   // await client.execute('mobile: scroll', {direction: 'left'});
   // await client.pause(3000);

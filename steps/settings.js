@@ -1,10 +1,9 @@
-
 const { Given, When, Then, setDefaultTimeout } = require('@wdio/cucumber-framework');
 //const { Given, When, Then, setDefaultTimeout } = require("@cucumber/cucumber");
 
 setDefaultTimeout(750 * 1000);
 
-Then('the user should be able to verify all the setting details before login', async function() {
+When('the user should be able to verify all the setting details before login', async function() {
     
     try {
 
@@ -235,7 +234,7 @@ Then('the user should be able to verify all the setting details before login', a
     }
 });
 
-Then('the user should be able to verify all the setting details before Enroll', async function() {
+When('the user should be able to verify all the setting details before Enroll', async function() {
     
     try {
 
@@ -497,7 +496,7 @@ Then('the user should be able to verify all the setting details before Enroll', 
     await driver.pause(2000);
 });
 
-Then('the user should be able to verify all the setting details after enroll', async function() {
+When('the user should be able to verify all the setting details after enroll', async function() {
     
     try {
 
@@ -759,7 +758,7 @@ Then('the user should be able to verify all the setting details after enroll', a
     await driver.pause(2000);
 });
 
-Then('the user should be able to verify all the setting details after FIDO Authentication', async function() {
+When('the user should be able to verify all the setting details after FIDO Authentication', async function() {
     
     try {
 

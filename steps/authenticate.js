@@ -318,7 +318,7 @@ When(/^the user cancels authentication with (.+)$/, async function(policy){
     }
 });
 
-When(/^the user authenticates with incorrect PIN$/, async function(){
+When('the user authenticates with incorrect PIN', async function(){
 
     try {
         await signIn.click();

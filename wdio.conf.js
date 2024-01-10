@@ -166,7 +166,8 @@ exports.config = {
     cucumberOpts: {
         // <string[]> (file/dir) require files before executing features
         //'./steps.js',
-        require: ['steps/settings.js','steps/authenticate.js','steps/changePolicy.js','steps/enroll.js','steps/logout.js','steps/primaryAuthentication.js','steps/reset.js','steps/selectPolicy.js','steps/unenroll.js'],
+        //'steps/settings.js','steps/authenticate.js','steps/changePolicy.js','steps/enroll.js','steps/logout.js','steps/primaryAuthentication.js','steps/reset.js','steps/selectPolicy.js','steps/unenroll.js'
+        require: ['./steps/*'],
         // <boolean> show full backtrace for errors
         plugin: ["pretty", "html:reports/cucumber-report.html"],
         

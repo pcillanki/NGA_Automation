@@ -1,19 +1,19 @@
 Feature: NGA Android Sample App 
 
-  @PrimaryAuth  @Regression
+  @PrimaryAuth @Regression
   Scenario Outline: As a user, I want to log into the NGA sample application with Primary Authentication
     
     Given the user launches the NGA sample application
     When the user has selected the <policy>
     When the user clicks on Sign In
     When the user logs in with <username> and <password>
-    Then the user should be able to verify all the setting details before Enroll
+    When the user should be able to verify all the setting details before Enroll
 
     Examples:
-      |policy | username | password             | message                        |
-      |Fallback| DMT-S-W263952560 | Aetna2aetna | Logged in to the NGA Sample app successfully |
-      |BiometricOnly| QA2-BARROWS-2909 | Aetna2aetna | Logged in to the NGA Sample app successfully |
-      |PINOnly| DMT-S-W263952560 | Aetna2aetna | Logged in to the NGA Sample app successfully |
+      |policy | username | password |
+      |Fallback| DMT-S-W263952560 | Aetna2aetna |
+      |BiometricOnly| QA2-BARROWS-2909 | Aetna2aetna |
+      |PINOnly| DMT-S-W263952560 | Aetna2aetna |
 
   @VerifySettings_BeforePrimaryAuth @Regression
   Scenario Outline: As a user, I want to verify the Settings screen details before Primary Authentication
@@ -21,13 +21,13 @@ Feature: NGA Android Sample App
     Given the user launches the NGA sample application
     When the user has selected the <policy>
     When the user navigates to the Settings screen
-    Then the user should be able to verify all the setting details before login
+    When the user should be able to verify all the setting details before login
 
     Examples:
-      |policy | message |
-      |Fallback | Validated Settings Screen details before Login with Fallback policy |
-      |BiometricOnly| Validated Settings Screen details before Login with Biometric only policy |
-      |PINOnly| Validated Settings Screen details before Login with PIN only policy |
+      |policy |
+      |Fallback |
+      |BiometricOnly|
+      |PINOnly|
 
   @VerifySettings_AfterPrimaryAuth_BeforeEnroll @Regression
   Scenario Outline: As a user, I want to verify the Settings screen details after Primary Authentication
@@ -307,7 +307,7 @@ Feature: NGA Android Sample App
     When the user clicks on Sign In
     When the user logs in with <username> and <password>
     When the user clicks on Enroll
-    When the user cancels enrollment
+    When the user cancels enrollment with <policy>
     When the user logs out
     When the user clicks on Change Policy
 
@@ -325,7 +325,7 @@ Feature: NGA Android Sample App
     When the user clicks on Sign In
     When the user logs in with <username> and <password>
     When the user clicks on Enroll
-    When the user cancels enrollment
+    When the user cancels enrollment with <policy>
     When the user logs out
     When the user clicks on Change Policy
 
@@ -343,7 +343,7 @@ Feature: NGA Android Sample App
     When the user clicks on Sign In
     When the user logs in with <username> and <password>
     When the user clicks on Enroll
-    When the user cancels enrollment
+    When the user cancels enrollment with <policy>
     When the user logs out
     When the user clicks on Change Policy
 
@@ -359,7 +359,7 @@ Feature: NGA Android Sample App
     When the user clicks on Sign In
     When the user logs in with <username> and <password>
     When the user clicks on Enroll
-    When the user cancels enrollment
+    When the user cancels enrollment with <policy>
     When the user logs out
     When the user clicks on Change Policy
 
@@ -375,7 +375,7 @@ Feature: NGA Android Sample App
     When the user clicks on Sign In
     When the user logs in with <username> and <password>
     When the user clicks on Enroll
-    When the user cancels enrollment
+    When the user cancels enrollment with <policy>
     When the user logs out
     When the user clicks on Change Policy
 
@@ -391,7 +391,7 @@ Feature: NGA Android Sample App
     When the user clicks on Sign In
     When the user logs in with <username> and <password>
     When the user clicks on Enroll
-    When the user cancels enrollment
+    When the user cancels enrollment with <policy>
     When the user logs out
     When the user clicks on Change Policy
 
@@ -411,7 +411,7 @@ Feature: NGA Android Sample App
     When the user validates the blank PIN error message
     When the user enters invalid PINs
     When the user validates the invalid PIN error messages
-    When the user cancels enrollment
+    When the user cancels enrollment with <policy>
     When the user clicks on Enroll
     When the user enrolls with <policy>
     When the user logs out

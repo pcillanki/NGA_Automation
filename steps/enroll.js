@@ -22,7 +22,7 @@ When('the user clicks on Enroll', async function() {
 
 });
 
-When(/^the user cancels enrollment$/, async function(policy){
+When(/^the user cancels enrollment with (.+)$/, async function(policy){
 
     try {
 
@@ -106,16 +106,11 @@ When(/^the user cancels enrollment$/, async function(policy){
     }
 });
 
-When(/^the user enrolls with (.+) policy with (.+)$/, async function(policy, PIN){
+When(/^the user enrolls with (.+)$/, async function(policy){
 
     try {
 
         if (policy.toLowerCase() == 'pinonly') {
-
-            var num = 123456;
-            var digits = num.toString().split('');
-            var realDigits = digits.map(Number)
-            console.log(realDigits);
             
             await driver.pause(10000);
     

@@ -5,14 +5,22 @@ setDefaultTimeout(750 * 1000);
 
 Given('the user launches the NGA sample application', async function() {
 
-    console.log("*****the user launches the NGA sample application");
-    this.log("NGA Android Sample Application launched");
-    /* this.attach(
-        "User has launched the Android NGA app successfully",
-        "text/plain"
-    );*/
-    await driver.pause(5000);
+    try {
+        console.log("*****the user launches the NGA sample application");
+        this.log("NGA Android Sample Application launched");
+        /* this.attach(
+            "User has launched the Android NGA app successfully",
+            "text/plain"
+        );*/
+        await driver.pause(5000);
 
+    } catch (err) {
+
+        await driver.closeApp('com.cvshealth.ngasdk.sampleapp');
+        await driver.removeApp('com.cvshealth.ngasdk.sampleapp');
+        throw new Error("Error while clicking on Sign In \n" + err);
+
+    }
 });
 
 When('the user clicks on Sign In', async function() {
