@@ -3,12 +3,6 @@ const { Given, When, Then, setDefaultTimeout } = require('@wdio/cucumber-framewo
 
 setDefaultTimeout(750 * 1000);
 
-const enrollFailedMessage = await driver.$("//android.widget.TextView[@resource-id='android:id/message']");
-//id - android:id/message
-//class - android.widget.TextView
-//text - Enroll failed
-//resource-id - android:id/message
-
 When('the user clicks on Enroll', async function() {
 
     try {

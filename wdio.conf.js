@@ -165,7 +165,8 @@ exports.config = {
     // If you are using Cucumber you need to specify the location of your step definitions.
     cucumberOpts: {
         // <string[]> (file/dir) require files before executing features
-        require: ['./steps.js','.steps/settings.js','.steps/authenticate.js','.steps/changePolicy.js','.steps/enroll.js','.steps/logout.js','.steps/primaryAuthentication.js','.steps/reset.js','.steps/selectPolicy.js','.steps/unenroll.js'],
+        //'./steps.js',
+        require: ['steps/settings.js','steps/authenticate.js','steps/changePolicy.js','steps/enroll.js','steps/logout.js','steps/primaryAuthentication.js','steps/reset.js','steps/selectPolicy.js','steps/unenroll.js'],
         // <boolean> show full backtrace for errors
         plugin: ["pretty", "html:reports/cucumber-report.html"],
         
